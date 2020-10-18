@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read SECRET_KEY from an environment variable
 import os
+import psycopg2
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'c8kjvw19ftijbtee+97pm8gta!-k2&3&l=2cq_ply)461sdy4a')
 
 # SECURITY WARNING: don't run with debug turned on in production! 上線時記得改成false
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  #Manages sessions across requests
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,8 +130,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
 
 # Redirect to catalog URL after login 登入後設定導入首頁 (Default redirects to /accounts/profile/)
@@ -138,3 +144,12 @@ LOGIN_REDIRECT_URL = '/'
 
 # 密碼重設系統要求您的網站支持電子郵件，這將記錄發送到控制台的所有電子郵件（因此您可以從控制台複製密碼重置鏈接）
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Simplified static file serving.提供靜態文件時減小它們的大小（效率更高）
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
