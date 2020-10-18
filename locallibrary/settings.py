@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'c8kjvw19ftijbtee+97pm8gta!-k2&
 # DEBUG = True
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://dry-lowlands-78164.herokuapp.com/', '127.0.0.1']
 
 
 # Application definition
