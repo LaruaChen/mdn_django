@@ -7,7 +7,7 @@
 {% endif %}
 
 {% if next %}
-  {% if user.is_authenticated %}
+  {% if user.is_authenticated %} <!--用戶是否認證過-->
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
   {% else %}

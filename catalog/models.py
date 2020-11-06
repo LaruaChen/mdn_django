@@ -21,7 +21,7 @@ class Language(models.Model):
     name = models.CharField(max_length=200,
                             help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
 
-    def __str__(self):
+    def __str__(self): # 回傳欄位名稱，用來記錄在django後台
         """String for representing the Model object (in Admin site etc.)"""
         return self.name
 # 語言模型
@@ -43,6 +43,7 @@ class Book(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
+    # on_delete 當"中文"的這筆資料被刪除，跟"中文"有關聯的資料都會被刪除。舉例A book的語言是中文，因為"中文"欄位被刪除，所以A book的語言欄位就變成空值
 
     def display_genre(self):
         """Creates a string for the Genre. This is required to display genre in Admin."""
